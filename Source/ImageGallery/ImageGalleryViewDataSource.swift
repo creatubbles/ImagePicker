@@ -19,7 +19,7 @@ extension ImageGalleryView: UICollectionViewDataSource {
 
     ImagePicker.resolveAsset(asset, size: CGSize(width: 160, height: 240)) { image in
       if let image = image {
-        cell.configureCell(image)
+        cell.configureCell(image, asset: asset)
 
         if indexPath.row == 0 && self.shouldTransform {
           cell.transform = CGAffineTransformMakeScale(0, 0)

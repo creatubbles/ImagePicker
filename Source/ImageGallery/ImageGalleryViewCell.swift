@@ -1,9 +1,23 @@
 import UIKit
+import Photos
 
 class ImageGalleryViewCell: UICollectionViewCell {
+  static var durationFormatter: NSDateComponentsFormatter {
+    let formatter = NSDateComponentsFormatter()
+    formatter.unitsStyle = .Positional
+    formatter.allowedUnits = [ .Minute, .Second ]
+    formatter.zeroFormattingBehavior = [ .Pad ]
+    
+    return formatter
+  }
 
   lazy var imageView = UIImageView()
   lazy var selectedImageView = UIImageView()
+  
+  lazy var durationLabel: UILabel = {
+    let durationLabel = UILabel()
+    return durationLabel
+  }()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -14,6 +28,8 @@ class ImageGalleryViewCell: UICollectionViewCell {
       view.clipsToBounds = true
       contentView.addSubview(view)
     }
+    durationLabel.translatesAutoresizingMaskIntoConstraints = false
+    contentView.addSubview(durationLabel)
     setupConstraints()
   }
 
@@ -22,8 +38,19 @@ class ImageGalleryViewCell: UICollectionViewCell {
   }
 
   // MARK: - Configuration
-
-  func configureCell(image: UIImage) {
+  
+  func configureCell(image: UIImage, asset: PHAsset) {
     imageView.image = image
+    
+    if asset.mediaType == .Video {
+      if let durationString = ImageGalleryViewCell.durationFormatter.stringFromTimeInterval(asset.duration) {
+        durationLabel.text = " \(durationString)"
+      }
+      durationLabel.textColor = UIColor.whiteColor()
+      durationLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+    } else {
+      durationLabel.text = nil
+      durationLabel.backgroundColor = UIColor.clearColor()
+    }
   }
 }

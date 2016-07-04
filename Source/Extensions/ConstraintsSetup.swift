@@ -148,6 +148,16 @@ extension ImageGalleryViewCell {
         relatedBy: .Equal, toItem: self, attribute: attribute,
         multiplier: 1, constant: 0))
     }
+    
+    for attribute: NSLayoutAttribute in [.Bottom, .Leading, .Trailing] {
+      addConstraint(NSLayoutConstraint(item: durationLabel, attribute: attribute,
+        relatedBy: .Equal, toItem: self, attribute: attribute,
+        multiplier: 1, constant: 0))
+    }
+    
+    addConstraint(NSLayoutConstraint(item: durationLabel, attribute: .Height,
+      relatedBy: .Equal, toItem: nil, attribute: .NotAnAttribute,
+      multiplier: 1, constant: 21))
   }
 }
 
