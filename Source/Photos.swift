@@ -5,7 +5,7 @@ public struct ImagePicker {
   public static func fetch(completion: (assets: [PHAsset]) -> Void) {
     let fetchOptions = PHFetchOptions()
     fetchOptions.predicate = NSPredicate(format:"mediaType == %d OR mediaType == %d", PHAssetMediaType.Image.rawValue, PHAssetMediaType.Video.rawValue)
-    fetchOptions.sortDescriptors = [NSSortDescriptor.init(key: "creationDate", ascending: false)]
+    fetchOptions.sortDescriptors = [NSSortDescriptor.init(key: "creationDate", ascending: true)]
     let authorizationStatus = PHPhotoLibrary.authorizationStatus()
     var fetchResult: PHFetchResult?
 
@@ -32,13 +32,9 @@ public struct ImagePicker {
   public static func resolveAsset(asset: PHAsset, size: CGSize = CGSize(width: 720, height: 1280), completion: (image: UIImage?) -> Void) {
     let imageManager = PHImageManager.defaultManager()
     let requestOptions = PHImageRequestOptions()
-    
-    if asset.mediaType == .Video {
-      requestOptions.synchronous = true
-    }
 
     imageManager.requestImageForAsset(asset, targetSize: size, contentMode: .AspectFill, options: requestOptions) { image, info in
-      if let info = info where info["PHImageFileUTIKey"] == nil {
+      if let info = info, degraded = info[PHImageResultIsDegradedKey] where degraded as! Bool == false {
         dispatch_async(dispatch_get_main_queue(), {
           completion(image: image)
         })
