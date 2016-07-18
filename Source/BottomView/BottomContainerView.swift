@@ -34,12 +34,21 @@ public class BottomContainerView: UIView {
 
   public lazy var doneButton: UIButton = { [unowned self] in
     let button = UIButton()
-    button.setTitle(Configuration.cancelButtonTitle, forState: .Normal)
+    button.setTitle(Configuration.doneButtonTitle, forState: .Normal)
     button.titleLabel?.font = Configuration.doneButton
     button.addTarget(self, action: #selector(doneButtonDidPress(_:)), forControlEvents: .TouchUpInside)
 
     return button
     }()
+  
+  public lazy var cancelButton: UIButton = { [unowned self] in
+    let button = UIButton()
+    button.setTitle(Configuration.cancelButtonTitle, forState: .Normal)
+    button.titleLabel?.font = Configuration.cancelButton
+    button.addTarget(self, action: #selector(cancelButtonDidPress(_:)), forControlEvents: .TouchUpInside)
+    
+    return button
+  }()
 
   lazy var stackView = ImageStackView(frame: CGRect(x: 0, y: 0, width: 80, height: 80))
 
@@ -65,7 +74,7 @@ public class BottomContainerView: UIView {
   public override init(frame: CGRect) {
     super.init(frame: frame)
 
-    [borderPickerButton, pickerButton, doneButton, stackView, topSeparator].forEach {
+    [borderPickerButton, pickerButton, cancelButton, doneButton, stackView, topSeparator].forEach {
       addSubview($0)
       $0.translatesAutoresizingMaskIntoConstraints = false
     }
@@ -83,11 +92,11 @@ public class BottomContainerView: UIView {
   // MARK: - Action methods
 
   func doneButtonDidPress(button: UIButton) {
-    if button.currentTitle == Configuration.cancelButtonTitle {
-      delegate?.cancelButtonDidPress()
-    } else {
-      delegate?.doneButtonDidPress()
-    }
+    delegate?.doneButtonDidPress()
+  }
+  
+  func cancelButtonDidPress(button: UIButton) {
+    delegate?.cancelButtonDidPress()
   }
 
   func handleTapGestureRecognizer(recognizer: UITapGestureRecognizer) {

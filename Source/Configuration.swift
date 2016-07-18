@@ -14,6 +14,7 @@ public struct Configuration {
 
   public static var numberLabelFont = UIFont(name: "HelveticaNeue-Bold", size: 19)!
   public static var doneButton = UIFont(name: "HelveticaNeue-Medium", size: 19)!
+  public static var cancelButton = UIFont(name: "HelveticaNeue-Medium", size: 19)!
   public static var flashButton = UIFont(name: "HelveticaNeue-Medium", size: 12)!
   public static var noImagesFont = UIFont(name: "HelveticaNeue-Medium", size: 18)!
   public static var noCameraFont = UIFont(name: "HelveticaNeue-Medium", size: 18)!

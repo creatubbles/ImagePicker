@@ -76,18 +76,14 @@ public class ImagePickerController: UIViewController {
   var statusBarHidden = true
 
   private var isTakingPicture = false
-  public var doneButtonTitle: String? {
-    didSet {
-      if let doneButtonTitle = doneButtonTitle {
-        bottomContainer.doneButton.setTitle(doneButtonTitle, forState: .Normal)
-      }
-    }
-  }
 
   // MARK: - View lifecycle
 
   public override func viewDidLoad() {
     super.viewDidLoad()
+    
+    bottomContainer.doneButton.enabled = false
+    adjustDoneButtonTextColor()
 
     for subview in [cameraController.view, galleryView, bottomContainer, topView] {
       view.addSubview(subview)
@@ -199,12 +195,12 @@ public class ImagePickerController: UIViewController {
 
   func subscribe() {
     NSNotificationCenter.defaultCenter().addObserver(self,
-      selector: #selector(adjustButtonTitle(_:)),
+      selector: #selector(adjustDoneButton(_:)),
       name: ImageStack.Notifications.imageDidPush,
       object: nil)
 
     NSNotificationCenter.defaultCenter().addObserver(self,
-      selector: #selector(adjustButtonTitle(_:)),
+      selector: #selector(adjustDoneButton(_:)),
       name: ImageStack.Notifications.imageDidDrop,
       object: nil)
 
@@ -220,7 +216,7 @@ public class ImagePickerController: UIViewController {
   }
 
   func didReloadAssets(notification: NSNotification) {
-    adjustButtonTitle(notification)
+    adjustDoneButton(notification)
     galleryView.collectionView.reloadData()
     galleryView.collectionView.setContentOffset(CGPoint.zero, animated: false)
   }
@@ -235,12 +231,15 @@ public class ImagePickerController: UIViewController {
     takePicture()
   }
 
-  func adjustButtonTitle(notification: NSNotification) {
+  func adjustDoneButton(notification: NSNotification) {
     guard let sender = notification.object as? ImageStack else { return }
 
-    let title = !sender.assets.isEmpty ?
-      Configuration.doneButtonTitle : Configuration.cancelButtonTitle
-    bottomContainer.doneButton.setTitle(title, forState: .Normal)
+    bottomContainer.doneButton.enabled = !sender.assets.isEmpty
+    adjustDoneButtonTextColor()
+  }
+  
+  private func adjustDoneButtonTextColor() {
+    bottomContainer.doneButton.setTitleColor(bottomContainer.doneButton.enabled ? UIColor.whiteColor() : UIColor.grayColor(), forState: .Normal)
   }
 
   // MARK: - Helpers
