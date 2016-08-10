@@ -10,7 +10,21 @@ protocol CameraViewDelegate: class {
 }
 
 class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate {
-
+  
+  override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?) {
+    super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+      UIDevice.currentDevice().beginGeneratingDeviceOrientationNotifications()
+      NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(setCorrectOrientationToPreviewLayer), name:UIDeviceOrientationDidChangeNotification, object:nil)
+  }
+  
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+  deinit {
+    NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
+  }
+  
   lazy var blurView: UIVisualEffectView = { [unowned self] in
     let effect = UIBlurEffect(style: .Dark)
     let blurView = UIVisualEffectView(effect: effect)
@@ -131,6 +145,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
     view.clipsToBounds = true
 
     previewLayer = layer
+    setCorrectOrientationToPreviewLayer()
   }
 
   // MARK: - Layout
@@ -268,6 +283,8 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
       connection.videoOrientation = .LandscapeLeft
     case .PortraitUpsideDown:
       connection.videoOrientation = .PortraitUpsideDown
+    case .FaceUp, .FaceDown:
+      connection.videoOrientation = .Portrait
     default:
       break
     }
