@@ -23,6 +23,7 @@ class CameraView: UIViewController, CLLocationManagerDelegate, CameraManDelegate
   
   deinit {
     NSNotificationCenter.defaultCenter().removeObserver(self, name: UIDeviceOrientationDidChangeNotification, object: nil)
+    UIDevice.currentDevice().endGeneratingDeviceOrientationNotifications()
   }
   
   lazy var blurView: UIVisualEffectView = { [unowned self] in
