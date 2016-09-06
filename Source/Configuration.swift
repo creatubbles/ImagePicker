@@ -9,6 +9,7 @@ public struct Configuration {
   public static var noImagesColor = UIColor(red: 0.86, green: 0.86, blue: 0.86, alpha: 1)
   public static var noCameraColor = UIColor(red: 0.86, green: 0.86, blue: 0.86, alpha: 1)
   public static var settingsColor = UIColor.whiteColor()
+  public static var greenColor = UIColor(red:0.64, green:0.85, blue:0.00, alpha:1)
 
   // MARK: Fonts
 
@@ -24,7 +25,7 @@ public struct Configuration {
 
   public static var OKButtonTitle = "OK"
   public static var cancelButtonTitle = "Cancel"
-  public static var doneButtonTitle = "Done"
+  public static var doneButtonTitle = "Next"
   public static var noImagesTitle = "No images available"
   public static var noCameraTitle = "Camera is not available"
   public static var settingsTitle = "Settings"
@@ -39,5 +40,5 @@ public struct Configuration {
 
   public static var canRotateCamera = true
   public static var collapseCollectionViewWhileShot = true
-  public static var recordLocation = true
+  public static var recordLocation = false
 }

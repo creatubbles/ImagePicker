@@ -239,7 +239,7 @@ public class ImagePickerController: UIViewController {
   }
   
   private func adjustDoneButtonTextColor() {
-    bottomContainer.doneButton.setTitleColor(bottomContainer.doneButton.enabled ? UIColor.whiteColor() : UIColor.grayColor(), forState: .Normal)
+    bottomContainer.doneButton.setTitleColor(bottomContainer.doneButton.enabled ? Configuration.greenColor : UIColor.grayColor(), forState: .Normal)
   }
 
   // MARK: - Helpers
